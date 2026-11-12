@@ -1,0 +1,26 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_NAME: banco_tabasco
+      DB_USER: banco
+      DB_PASS: banco123
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: banco_tabasco
+      MYSQL_USER: banco
+      MYSQL_PASSWORD: banco123
+      MYSQL_ROOT_PASSWORD: root123
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - datos:/var/lib/mysql
+volumes:
+  datos:
